@@ -1,0 +1,21 @@
+# /etc/udev/rules.d/99-my-rw-lkm.rules
+#
+# udev rule for /dev/dummydriver
+#
+# This file must be installed on the TARGET board (not the build host):
+#   sudo cp 99-my-rw-lkm.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules
+#   sudo udevadm trigger
+#
+# What this rule does:
+#   KERNEL=="dummydriver"   matches the device whose kernel name (the string
+#                           passed to device_create()) is "dummydriver".
+#   MODE="0666"             sets read+write permissions for owner, group,
+#                           and others, so any user can open /dev/dummydriver
+#                           without sudo.
+#
+# Optional hardening: restrict to a specific group instead of world-writable:
+#   KERNEL=="dummydriver", GROUP="dialout", MODE="0660"
+# Then add your user:  sudo usermod -aG dialout $USER
+
+KERNEL=="dummydriver", MODE="0666"
